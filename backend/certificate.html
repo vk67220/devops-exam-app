@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Certificate of Completion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-container {
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            padding: 20px;
+        }
+        
+        .certificate {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            background: white;
+            border: 15px solid transparent;
+            border-image: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border-image-slice: 1;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.05) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(79, 70, 229, 0.05) 0%, transparent 25%);
+            background-size: auto, auto;
+            background-position: left top, right bottom;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+        
+        .certificate-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%234f46e5" opacity="0.03" d="M30,50 Q50,30 70,50 Q50,70 30,50 Z"/></svg>');
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .header, .content, .footer {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #666;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 100px;
+        }
+        
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 700;
+            margin: 10px 0;
+            color: #1a1a1a;
+            padding-bottom: 15px;
+            position: relative;
+            text-transform: capitalize;
+        }
+        
+        .name:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        
+        .description {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .highlight {
+            font-weight: 600;
+            color: #4f46e5;
+            background: rgba(79, 70, 229, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .signature-container {
+            text-align: center;
+            width: 250px;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            margin: 0 auto;
+            width: 180px;
+            height: 1px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+        
+        .signature-line:after {
+            content: "✍";
+            position: absolute;
+            top: -12px;
+            right: -10px;
+            font-size: 20px;
+            color: #4f46e5;
+        }
+        
+        .signature-name {
+            margin-top: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .signature-title {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .date-container {
+            text-align: right;
+            align-self: flex-end;
+        }
+        
+        .date-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .youtube-channel {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        
+        .youtube-icon {
+            color: #ff0000;
+            font-size: 24px;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4f46e5;
+        }
+        
+        .devops-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 180px;
+            height: 180px;
+            background-image: url('https://images.seeklogo.com/logo-png/42/1/devops-logo-png_seeklogo-423085.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        @media (max-width: 1024px) {
+            .certificate {
+                height: auto;
+                padding: 30px;
+            }
+            
+            .content {
+                padding: 0 30px;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+            
+            .name {
+                font-size: 42px;
+            }
+            
+            .description {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="certificate-container">
+        <div class="certificate">
+            <div class="devops-logo"></div>
+            <div class="certificate-overlay"></div>
+            
+            <div class="header">
+                <div class="title">Certificate of Completion</div>
+
+                <div class="subtitle">This is to certify that</div>
+            </div>
+            
+            <div class="content">
+                <div class="name">{{ name }}</div>
+                <div class="description">has successfully completed the <strong>DevOps Mock Certification Exam</strong></div>
+                <div class="description">with a score of <span class="highlight">{{ score }} out of 15</span></div>
+            </div>
+            
+            <div class="footer">
+                <div class="signature-container">
+                    <div class="signature-line"></div>
+                    <div class="signature-name">Kastro Kiran V</div>
+                    <div class="signature-title">Exam Administrator</div>
+                </div>
+                
+                <div class="date-container">
+                    <div class="date-label">Issued Date</div>
+                    <div>{{ date }}</div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="youtube-channel">
+                    <i class="fab fa-youtube youtube-icon"></i>
+                    <span>YouTube Channel: Learn With KASTRO</span>
+                </div>
+                
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQHJB_lF1d9OSw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1718971147172?e=1749686400&v=beta&t=DlqKNHoJYAZoMPOXK-4ECwQa9ffyJAkwrDm0hBt-pwg" 
+                     alt="Kastro Kiran V" 
+                     class="profile-image">
+            </div>
+            
+            <div class="developed-by">
+                DevOps mock certification exam app developed by <strong>KASTRO<strong>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
