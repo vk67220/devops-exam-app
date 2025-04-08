@@ -4,29 +4,29 @@
     <title>Certificate of Completion</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
-
+        
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f8f9fa;
+            background: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
-
+        
         .certificate-container {
-            width: 100%;
+            width: 90%;
             max-width: 1200px;
-            aspect-ratio: 16 / 9;
             position: relative;
             padding: 20px;
         }
-
+        
         .certificate {
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 700px;
             background: white;
             border: 15px solid transparent;
             border-image: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
@@ -35,35 +35,19 @@
             display: flex;
             flex-direction: column;
             padding: 40px;
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.05) 0%, transparent 25%),
-                radial-gradient(circle at 80% 70%, rgba(79, 70, 229, 0.05) 0%, transparent 25%);
-            background-repeat: no-repeat;
-            position: relative;
             overflow: hidden;
         }
-
-        .certificate-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%234f46e5" opacity="0.03" d="M30,50 Q50,30 70,50 Q50,70 30,50 Z"/></svg>');
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-        .header, .content {
+        
+        .header, .content, .footer {
             position: relative;
             z-index: 1;
         }
-
+        
         .header {
             text-align: center;
             margin-bottom: 10px;
         }
-
+        
         .title {
             font-family: 'Playfair Display', serif;
             font-size: 48px;
@@ -74,7 +58,7 @@
             position: relative;
             display: inline-block;
         }
-
+        
         .title:after {
             content: "";
             position: absolute;
@@ -86,14 +70,14 @@
             background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
             border-radius: 2px;
         }
-
+        
         .subtitle {
             font-size: 20px;
             color: #666;
             margin-top: 10px;
             letter-spacing: 0.5px;
         }
-
+        
         .content {
             flex: 1;
             display: flex;
@@ -103,7 +87,7 @@
             text-align: center;
             padding: 0 100px;
         }
-
+        
         .name {
             font-family: 'Playfair Display', serif;
             font-size: 52px;
@@ -114,7 +98,7 @@
             position: relative;
             text-transform: capitalize;
         }
-
+        
         .name:after {
             content: "";
             position: absolute;
@@ -125,14 +109,14 @@
             height: 3px;
             background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
         }
-
+        
         .description {
             font-size: 22px;
             margin: 15px 0;
             color: #555;
             line-height: 1.6;
         }
-
+        
         .highlight {
             font-weight: 600;
             color: #4f46e5;
@@ -140,61 +124,135 @@
             padding: 2px 8px;
             border-radius: 4px;
         }
-
-        .footer-custom {
+        
+        .signature-container {
             position: absolute;
-            bottom: 40px;
-            left: 40px;
-            display: flex;
-            flex-direction: column;
+            left: 60px;
+            bottom: 80px;
             text-align: left;
-            font-weight: 600;
-            font-size: 16px;
-            color: #333;
-            z-index: 2;
+            width: 250px;
         }
-
-        .footer-custom span {
-            display: block;
+        
+        .signature-line {
+            border-top: 1px solid #333;
+            width: 180px;
+            height: 1px;
+            position: relative;
+            margin-bottom: 5px;
         }
-
-        .issued-date {
+        
+        .signature-line:after {
+            content: "✍";
             position: absolute;
-            bottom: 40px;
-            right: 40px;
-            text-align: right;
-            font-weight: 600;
-            font-size: 16px;
-            color: #333;
-            z-index: 2;
+            top: -12px;
+            right: -10px;
+            font-size: 20px;
+            color: #4f46e5;
         }
-
-        .developed-by {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
+        
+        .signature-name {
+            margin-top: 5px;
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .signature-title {
+            font-size: 16px;
             color: #777;
-            z-index: 2;
         }
-
-        .youtube-channel {
+        
+        .date-container {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            right: 60px;
+            bottom: 80px;
+            text-align: right;
+        }
+        
+        .date-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+        
+        .date-value {
+            font-size: 16px;
+            margin-top: 0;
+        }
+        
+        .footer-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+        
+        .youtube-channel {
             display: flex;
             align-items: center;
             gap: 10px;
             color: #4f46e5;
             font-weight: 600;
-            font-size: 16px;
-            z-index: 2;
         }
-
+        
         .youtube-icon {
             color: #ff0000;
-            font-size: 20px;
+            font-size: 24px;
+        }
+        
+        .devops-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 180px;
+            height: 180px;
+            background-image: url('https://images.seeklogo.com/logo-png/42/1/devops-logo-png_seeklogo-423085.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .developed-by {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        @media (max-width: 1024px) {
+            .certificate {
+                height: auto;
+                padding: 30px;
+            }
+            
+            .content {
+                padding: 0 30px;
+            }
+            
+            .title {
+                font-size: 36px;
+            }
+            
+            .name {
+                font-size: 42px;
+            }
+            
+            .description {
+                font-size: 18px;
+            }
+            
+            .signature-container,
+            .date-container {
+                position: static;
+                margin-top: 20px;
+                text-align: center;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -202,34 +260,37 @@
 <body>
     <div class="certificate-container">
         <div class="certificate">
-            <div class="certificate-overlay"></div>
-
+            <div class="devops-logo"></div>
+            
             <div class="header">
                 <div class="title">Certificate of Completion</div>
                 <div class="subtitle">This is to certify that</div>
             </div>
-
+            
             <div class="content">
                 <div class="name">{{ name }}</div>
                 <div class="description">has successfully completed the <strong>DevOps Mock Certification Exam</strong></div>
-                <div class="description">with a score of <span class="highlight">{{ score }} out of 15</span></div>
+                <div class="description">with a score of <span class="highlight">{{ score }}</span></div>
             </div>
-
-            <div class="footer-custom">
-                <span>Kastro Kiran V</span>
-                <span>Exam Administrator</span>
+            
+            <div class="signature-container">
+                <div class="signature-line"></div>
+                <div class="signature-name">Kastro Kiran V</div>
+                <div class="signature-title">Exam Administrator</div>
             </div>
-
-            <div class="issued-date">
-                <span>Issued Date</span>
-                <span>{{ date }}</span>
+            
+            <div class="date-container">
+                <div class="date-label">Issued Date</div>
+                <div class="date-value">April 08, 2025</div>
             </div>
-
-            <div class="youtube-channel">
-                <i class="fab fa-youtube youtube-icon"></i>
-                <span>YouTube Channel: Learn With KASTRO</span>
+            
+            <div class="footer-bottom">
+                <div class="youtube-channel">
+                    <i class="fab fa-youtube youtube-icon"></i>
+                    <span>YouTube Channel: Learn With KASTRO</span>
+                </div>
             </div>
-
+            
             <div class="developed-by">
                 DevOps mock certification exam app developed by <strong>KASTRO</strong>
             </div>
