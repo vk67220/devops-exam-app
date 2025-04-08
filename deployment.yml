@@ -24,4 +24,4 @@ spec:
         - secretRef:
             name: devopsexamapp-secrets
       imagePullSecrets:
-      - name: dockerhub-creds
+      - name: docker-creds
