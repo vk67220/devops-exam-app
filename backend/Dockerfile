@@ -15,13 +15,17 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy requirements first to leverage Docker cache
-COPY requirements.txt .
+COPY backend/requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY . .
+# Copy backend application code
+COPY backend/ .
+
+# Copy frontend templates into templates directory
+RUN mkdir -p templates
+COPY frontend/ templates/
 
 # Expose port
 EXPOSE 5000
