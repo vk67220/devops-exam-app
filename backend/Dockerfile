@@ -7,13 +7,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend code
-COPY app.py questions.py certificate.html ./
-
-# Create templates folder
-RUN mkdir -p templates
-
-# Copy HTML templates from frontend (relative to root build context)
-COPY ../frontend/*.html templates/
+# Copy application files and templates folder
+COPY . .
 
 CMD ["python", "app.py"]
