@@ -3,24 +3,37 @@ kind: ServiceAccount
 metadata:
   name: jenkins
   namespace: webapps
+  labels:
+    app: jenkins
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: jenkins-role
   namespace: webapps
+  labels:
+    app: jenkins
 rules:
 - apiGroups: [""]
-  resources: ["pods", "pods/log"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list", "create", "update", "delete"]
+  resources: ["pods", "pods/log", "pods/status", "pods/exec"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: [""]
-  resources: ["services", "configmaps", "secrets"]
-  verbs: ["get", "list", "create", "update", "delete"]
-  - apiGroups: [""]
-  resources: ["pods/log"]
+  resources: ["services", "endpoints", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets", "statefulsets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["extensions", "networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["get", "list", "watch", "create"]
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods"]
   verbs: ["get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -28,6 +41,8 @@ kind: RoleBinding
 metadata:
   name: jenkins-role-binding
   namespace: webapps
+  labels:
+    app: jenkins
 subjects:
 - kind: ServiceAccount
   name: jenkins
