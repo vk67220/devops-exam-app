@@ -5,7 +5,9 @@ metadata:
   name: devopsexamapp-service
   namespace: webapps
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-type: "alb"
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: "ip"
 spec:
   type: LoadBalancer
   selector:
@@ -15,3 +17,5 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 5000  # Matches Flask port
+
+  
