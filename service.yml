@@ -1,20 +1,17 @@
+# service.yml (updated)
 apiVersion: v1
 kind: Service
 metadata:
   name: devopsexamapp-service
   namespace: webapps
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"  # Network Load Balancer for better performance
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
 spec:
   type: LoadBalancer
   selector:
     app: devopsexamapp
   ports:
-    - name: backend
+    - name: http
       protocol: TCP
       port: 80
-      targetPort: 5000  # Matches Flask port in your backend/app.py
-    - name: frontend
-      protocol: TCP
-      port: 8080
-      targetPort: 8080  # For your frontend HTML files
+      targetPort: 5000  # Matches Flask port
