@@ -13,15 +13,24 @@ spec:
       labels:
         app: devopsexamapp
     spec:
-      containers:
-      - name: devopsexamapp
-        image: kastrov/devopsexamapp:latest
-        ports:
-        - containerPort: 5000
-        envFrom:
-        - configMapRef:
-            name: devopsexamapp-config
-        - secretRef:
-            name: devopsexamapp-secrets
-      imagePullSecrets:
-      - name: docker-creds
+  containers:
+  - name: devopsexamapp
+    image: kastrov/devopsexamapp:latest
+    ports:
+    - containerPort: 5000
+    envFrom:
+    - configMapRef:
+        name: devopsexamapp-config
+    - secretRef:
+        name: devopsexamapp-secrets
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 5000
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 3
+    lifecycle:
+      postStart:
+        exec:
+          command: ["/bin/sh", "-c", "sleep 30"] # Wait for MySQL to be ready
