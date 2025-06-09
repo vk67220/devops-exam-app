@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: flask
-          image: prasad5806/prasad-exam-app:latest
+          image: prasad5806/devopsexamapp:latest
           ports:
             - containerPort: 5000
           env:
