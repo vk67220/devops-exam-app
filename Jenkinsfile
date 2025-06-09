@@ -202,6 +202,25 @@ pipeline {
 }
 
 ----------------------------------------------------------K8S-----------------------
+Here first we need to install AWS Credentials Plugins
+
+Step 1: Install AWS Credentials Plugin
+Install AWS Credentials Plugin
+Go to Manage Jenkins → Plugins.
+Click the Available tab.
+Search for "AWS Credentials".
+Check the box and click Install without restart.
+
+Step 2: Add AWS Credentials After Plugin Install
+Go to Manage Jenkins → Manage Credentials.
+Select the appropriate scope (e.g., (global)).
+Click Add Credentials.
+Now you should see Kind: AWS Credentials.
+Fill in:
+Access Key ID
+Secret Access Key
+ID: aws-creds
+
 pipeline {
     agent any
 
