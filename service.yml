@@ -10,7 +10,7 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-  type: ClusterIP
+  type: LoadBalancer
 ---
 # MySQL Service
 apiVersion: v1
