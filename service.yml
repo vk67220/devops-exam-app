@@ -10,7 +10,8 @@ spec:
   ports:
     - port: 5000
       targetPort: 5000
-  type: LoadBalancer
+      nodePort: 30036
+  type: NodePort
 ---
 # MySQL Service
 apiVersion: v1
