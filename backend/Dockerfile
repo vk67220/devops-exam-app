@@ -16,10 +16,14 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+# Copy and install dependencies
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .                # This copies all from backend/
-COPY ../frontend ./templates  # This pulls in frontend HTML files into the templates folder
+# Copy backend app files
+COPY backend/ .
+
+# Copy frontend HTML files into templates folder
+COPY frontend/ ./templates
 
 CMD ["python", "app.py"]
