@@ -1,0 +1,25 @@
+# Flask App Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: flask
+  ports:
+    - port: 80
+      targetPort: 5000
+---
+# MySQL Headless Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  clusterIP: None
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
