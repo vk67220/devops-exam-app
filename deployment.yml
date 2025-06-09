@@ -1,4 +1,4 @@
-# Flask Application Deployment
+# Flask App Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -25,7 +25,7 @@ spec:
             - name: FLASK_ENV
               value: "production"
             - name: MYSQL_HOST
-              value: "mysql-0.mysql"  # Headless service DNS
+              value: "mysql"
             - name: MYSQL_USER
               value: "root"
             - name: MYSQL_PASSWORD
@@ -33,13 +33,13 @@ spec:
             - name: MYSQL_DATABASE
               value: "devops_exam"
 ---
-# MySQL StatefulSet
+# MySQL Deployment with PVC
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mysql
+  namespace: devopsexamapp
 spec:
-  serviceName: "mysql"
   replicas: 1
   selector:
     matchLabels:
@@ -62,12 +62,7 @@ spec:
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-    - metadata:
-        name: mysql-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: gp2
-        resources:
-          requests:
-            storage: 1Gi
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-data
