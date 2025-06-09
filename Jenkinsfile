@@ -221,6 +221,77 @@ Access Key ID
 Secret Access Key
 ID: aws-creds
 
+
+1. Attach AmazonEBSCSIDriverPolicy to your worker node IAM role
+Go to AWS Console → IAM → Roles
+
+Find the role attached to your EC2 worker nodes (usually named like eksctl-<cluster>-NodeInstanceRole-...)
+
+Click Attach policies
+
+Search and select AmazonEBSCSIDriverPolicy
+
+Click Attach policy
+
+OR, if your EKS cluster is using EKS Managed Add-ons, and your nodes already have proper IAM permissions (after step 1), then you can just run:
+
+bash
+Copy
+Edit
+aws eks create-addon \
+  --cluster-name devopsapp \
+  --addon-name aws-ebs-csi-driver \
+  --region <your-region>
+
+kubectl get pods -n kube-system | grep ebs
+
+
+
+
+Step 1: Attach AmazonEBSCSIDriverPolicy to the worker node role
+This is the role that needs the permission:
+
+Copy
+Edit
+eksctl-kastro-eks-nodegroup-node2-NodeInstanceRole-sKc0D0N1O1EP
+👉 Attach the missing policy:
+Go to AWS Console → IAM → Roles.
+
+Search for eksctl-kastro-eks-nodegroup-node2-NodeInstanceRole-sKc0D0N1O1EP.
+
+Click Attach policies.
+
+Search for AmazonEBSCSIDriverPolicy.
+
+Select it and click Attach policy.
+
+✅ Step 2: Install the EBS CSI Driver Addon
+Since you're using eksctl, the add-on can be installed via AWS CLI. Use this:
+
+bash
+Copy
+Edit
+aws eks create-addon \
+  --cluster-name kastro-eks-cluster \
+  --addon-name aws-ebs-csi-driver \
+  --region <your-region>
+Replace <your-region> (e.g., ap-south-1 or us-east-1) with your actual AWS region.
+
+✅ Step 3: Verify EBS CSI is running
+After 1–2 minutes, run:
+
+bash
+Copy
+Edit
+kubectl get pods -n kube-system | grep ebs
+You should see pods like:
+
+sql
+Copy
+Edit
+ebs-csi-controller-xxxx   Running
+ebs-csi-node-xxxxx        Running
+
 pipeline {
     agent any
 
