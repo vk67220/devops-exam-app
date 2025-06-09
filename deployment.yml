@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: flask
-          image: kastrov/devopsexamapp:latest
+          image: prasad5806/devopsexamapp:latest
           ports:
             - containerPort: 5000
           env:
