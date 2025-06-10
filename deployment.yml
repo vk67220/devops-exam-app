@@ -66,18 +66,17 @@
 #               value: "devops_exam"
 
 
-# MySQL StatefulSet with gp3 storage
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
   namespace: devopsexamapp
 spec:
+  serviceName: mysql
+  replicas: 1
   selector:
     matchLabels:
       app: mysql
-  serviceName: mysql
-  replicas: 1
   template:
     metadata:
       labels:
@@ -96,15 +95,11 @@ spec:
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-    - metadata:
-        name: mysql-storage
-      spec:
-        storageClassName: gp3
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 1Gi
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-ebs-pvc
+  volumeClaimTemplates: []  # <--- No dynamic PVCs
 ---
 # Flask Deployment
 apiVersion: apps/v1
