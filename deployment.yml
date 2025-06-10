@@ -66,20 +66,7 @@
 #               value: "devops_exam"
 
 
-# PersistentVolumeClaim for MySQL
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pvc
-  namespace: devopsexamapp
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-# MySQL StatefulSet
+# MySQL StatefulSet with gp3 storage
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -153,4 +140,3 @@ spec:
               value: "rootpass"
             - name: MYSQL_DATABASE
               value: "devops_exam"
-
