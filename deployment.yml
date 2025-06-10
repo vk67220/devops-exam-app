@@ -1,78 +1,9 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: mysql
-#   namespace: devopsexamapp
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: mysql
-#   template:
-#     metadata:
-#       labels:
-#         app: mysql
-#     spec:
-#       containers:
-#         - name: mysql
-#           image: mysql:5.7
-#           ports:
-#             - containerPort: 3306
-#           env:
-#             - name: MYSQL_ROOT_PASSWORD
-#               value: "rootpass"
-#             - name: MYSQL_DATABASE
-#               value: "devops_exam"
-#           volumeMounts:
-#             - name: mysql-data
-#               mountPath: /var/lib/mysql
-#       volumes:
-#         - name: mysql-data
-#           emptyDir: {}   # Temporary storage, change to PVC for persistence if needed
-
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: flask-app
-#   namespace: devopsexamapp
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: flask
-#   template:
-#     metadata:
-#       labels:
-#         app: flask
-#     spec:
-#       containers:
-#         - name: flask
-#           image: prasad5806/devopsexamapp:latest
-#           ports:
-#             - containerPort: 5000
-#           env:
-#             - name: FLASK_APP
-#               value: "app.py"
-#             - name: FLASK_ENV
-#               value: "production"
-#             - name: MYSQL_HOST
-#               value: "mysql"
-#             - name: MYSQL_USER
-#               value: "root"
-#             - name: MYSQL_PASSWORD
-#               value: "rootpass"
-#             - name: MYSQL_DATABASE
-#               value: "devops_exam"
-
-
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mysql
   namespace: devopsexamapp
 spec:
-  serviceName: mysql
   replicas: 1
   selector:
     matchLabels:
@@ -93,15 +24,13 @@ spec:
             - name: MYSQL_DATABASE
               value: "devops_exam"
           volumeMounts:
-            - name: mysql-storage
+            - name: mysql-data
               mountPath: /var/lib/mysql
       volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-ebs-pvc
-  volumeClaimTemplates: []  # <--- No dynamic PVCs
+        - name: mysql-data
+          emptyDir: {}   # Temporary storage, change to PVC for persistence if needed
+
 ---
-# Flask Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,3 +64,5 @@ spec:
               value: "rootpass"
             - name: MYSQL_DATABASE
               value: "devops_exam"
+
+
