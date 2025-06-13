@@ -9,3 +9,9 @@ CREATE TABLE IF NOT EXISTS results (
     score INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+kubectl logs -n devopsexamapp flask-app-cc876df7f-qrzks --- Table 'devops_exam.results' doesn't exist
+
+used to check the issue if any issue
