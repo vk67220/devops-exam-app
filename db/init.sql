@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS results (
 SHOW TABLES;
 
 
-kubectl logs -n devopsexamapp flask-app-cc876df7f-qrzks --- Table 'devops_exam.results' doesn't exist
+#kubectl logs -n devopsexamapp flask-app-cc876df7f-qrzks --- Table 'devops_exam.results' doesn't exist
 
-used to check the issue if any issue
+#used to check the issue if any issue
