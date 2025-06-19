@@ -62,6 +62,7 @@ spec:
         name: mysql-persistent-storage
       spec:
         accessModes: ["ReadWriteOnce"]
+        storageClassName: mysql-gp3
         resources:
           requests:
             storage: 1Gi
