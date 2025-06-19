@@ -342,3 +342,128 @@ pipeline {
         }
     }
 }
+
+
+
+======================================================================================
+statefulset process
+======================================================================================
+
+
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = "prasad5806/devopsexamapp:latest"
+        SCANNER_HOME = tool 'sonar-scanner'
+        EKS_CLUSTER = "kastro-eks"
+        K8S_NAMESPACE = "devopsexamapp"
+        AWS_REGION = "us-east-2"
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git 'https://github.com/vk67220/devops-exam-app.git'
+            }
+        }
+
+        stage('File System Scan - Trivy') {
+            steps {
+                sh "trivy fs --security-checks vuln,config --format table -o trivy-fs-report.html ."
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectName=devops-exam-app \
+                        -Dsonar.projectKey=devops-exam-app \
+                        -Dsonar.sources=. \
+                        -Dsonar.language=py \
+                        -Dsonar.python.version=3 \
+                        -Dsonar.host.url=http://3.147.36.25:9000
+                    """
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                    script {
+                        withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                            sh "docker build -t ${DOCKER_IMAGE} ."
+                        }
+                    }
+                }
+            }
+        
+
+        stage('Docker Scout Analysis') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        sh "docker-scout quickview ${DOCKER_IMAGE}"
+                        sh "docker-scout cves ${DOCKER_IMAGE}"
+                        sh "docker-scout recommendations ${DOCKER_IMAGE}"
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        sh "docker push ${DOCKER_IMAGE}"
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to EKS') {
+            steps {
+                script {
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                         credentialsId: 'aws-creds',
+                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
+                    ]) {
+                        withCredentials([
+                            usernamePassword(
+                                credentialsId: 'docker',
+                                usernameVariable: 'DOCKER_USER',
+                                passwordVariable: 'DOCKER_PASS'
+                            )
+                        ]) {
+                            sh """
+                                aws eks update-kubeconfig --name ${EKS_CLUSTER} --region ${AWS_REGION}
+
+                                kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+
+                                kubectl create secret docker-registry dockerhub-creds \\
+                                    --docker-server=https://index.docker.io/v1/ \\
+                                    --docker-username=\$DOCKER_USER \\
+                                    --docker-password=\$DOCKER_PASS \\
+                                    --namespace=${K8S_NAMESPACE} \\
+                                    --dry-run=client -o yaml | kubectl apply -f -
+                                
+                                
+                                kubectl apply -f storageclass.yaml -n ${K8S_NAMESPACE}
+                                kubectl apply -f 1-mysql-headless-svc.yaml -n ${K8S_NAMESPACE}
+                                kubectl apply -f 2-mysql-statefulset.yaml -n ${K8S_NAMESPACE}
+                                kubectl apply -f 3-flask-deployment.yaml -n ${K8S_NAMESPACE}
+                                kubectl apply -f 4-flask-service.yaml -n ${K8S_NAMESPACE}
+
+                                kubectl rollout status deployment/flask-app -n ${K8S_NAMESPACE}
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
